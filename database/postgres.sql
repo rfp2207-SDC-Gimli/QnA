@@ -36,4 +36,3 @@ COPY questions FROM '/Users/aaronyabut/SDC Project/QnA/data/questions.csv' DELIM
 COPY answers FROM '/Users/aaronyabut/SDC Project/QnA/data/answers.csv' DELIMITER ',' CSV HEADER;
 COPY photos FROM '/Users/aaronyabut/SDC Project/QnA/data/answers_photos.csv' DELIMITER ',' CSV HEADER;
 
-
