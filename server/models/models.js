@@ -1,15 +1,4 @@
 const pool = require('../../database/db.js')
-/*
-'photos', (SELECT COALESCE(json_agg(json_build_object(
-                'id', photos.photos_id,
-                'url', photos.photos_url
-              )),
-              array[]:json[])
-              FROM photos
-              WHERE answers.answer_id=photos.answer_id
-              )
-*/
-
 
 module.exports = {
   getAllQuestions: (product_id, page, count) => new Promise((resolve, reject) => {
@@ -59,15 +48,6 @@ module.exports = {
     });
   }),
   getAllAnswers: (question_id, page, count) => new Promise((resolve, reject) => {
-    /*
-    var queryStr = `
-      SELECT answer_id
-      FROM answers
-      WHERE answers.question_id=${question_id}
-      LIMIT ${count}
-      OFFSET ${page}
-    `
-    */
     var queryStr = `
       SELECT json_agg(resObj)
         FROM (
@@ -101,16 +81,6 @@ module.exports = {
     })
   }),
   addQuestion: (question_body, asker_name, asker_email, product_id) => new Promise((resolve,reject) => {
-    /*
-    SELECT MAX(question_id) FROM questions;
-    var queryStr = ``
-    var queryStr = `
-      INSERT INTO questions
-        (question_body, asker_name, asker_email, product_id)
-      VALUES
-        ('${question_body}', '${asker_name}', '${asker_email}', '${product_id}')
-    `
-    */
     var queryStr = `
       INSERT INTO questions
         (
@@ -141,7 +111,6 @@ module.exports = {
     })
   }),
   addAnswer: ( answer_body, answerer_name, answerer_email, question_id ) => new Promise((resolve, reject) => {
-    // const queryStr = ``;
     const queryStr = `
       INSERT INTO answers
         (
@@ -209,7 +178,6 @@ module.exports = {
     })
   }),
   updateReportQuestion: (question_id) => new Promise((resolve, reject) => {
-    console.log('TESTING UPDATE REPORT')
     var queryStr = `
       UPDATE questions
       SET reported = true
@@ -222,7 +190,6 @@ module.exports = {
     })
   }),
   updateHelpfulAnswer: (answer_id) => new Promise((resolve, reject) => {
-    console.log('TESTING UPDATE HELP')
     var queryStr = `
       UPDATE answers
       SET helpful = helpful + 1
@@ -235,7 +202,6 @@ module.exports = {
     })
   }),
   updateReportAnswer: (answer_id) => new Promise((resolve, reject) => {
-    console.log('TESTING UPDATE REPORT')
     var queryStr = `
       UPDATE answers
       SET reported = true
