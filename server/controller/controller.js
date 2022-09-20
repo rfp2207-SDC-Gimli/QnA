@@ -63,12 +63,6 @@ module.exports = {
       "asker_email": "thinker@gmail.com",
       "product_id": "54321"
     }
-    {
-      "answer_body": "Why?",
-      "answerer_name_name": "thinker",
-      "answerer_email": "thinker@gmail.com",
-      "photos": "https://i.kym-cdn.com/photos/images/newsfeed/002/214/242/763.jpg"
-    }
     */
   },
   postAnswer: (req, res) => {
@@ -76,19 +70,31 @@ module.exports = {
     const { answer_body, answerer_name, answerer_email, photos } = req.body;
     const { question_id } = req.params;
 
-    // console.log('TEST POST ANSWER', answer_body, answerer_name, answerer_email, photos)
-    // console.log('TEST POST ANSWER', question_id)
-
-
     models.addAnswer( answer_body, answerer_name, answerer_email, question_id )
       .then((resolve) => {
-        console.log('good add answer', resolve);
-        res.sendStatus(201);
+        return resolve
+      })
+      .then((answer_id) => {
+        if (!photos) {
+          res.sendStatus(201);
+        } else {
+          models.addPhotos(answer_id, photos)
+            .then((resolve) => {
+              console.log('good add photo');
+              res.sendStatus(201);
+            })
+            .catch((err) => {
+              console.log('bad add photo', err);
+              res.send(err).status(400);
+            })
+        }
+        console.log('answer_id', answer_id)
       })
       .catch((err) => {
         console.log('bad add answer', err);
         res.send(err).status(400);
       })
+
 
 
     // localhost:4000/qa/questions/3518964/answers
@@ -103,23 +109,65 @@ module.exports = {
       }
     */
   },
-  putHelpful: (req, res) => {
-    models.updateHelpful('test num', 'test value', (err, response) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(response);
-      }
-    })
+  putHelpfulQuestion: (req, res) => {
+    const { question_id } = req.params;
+
+    models.updateHelpfulQuestion(question_id)
+      .then((result) => {
+        res.sendStatus(201)
+      })
+      .catch((err) => {
+        res.send(err).status(400)
+      })
+
+    // localhost:4000/qa/questions/3518964/helpful
+
   },
-  putReport: (req, res) => {
-    models.updateReport('test num', 'test value', (err, response) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(response);
-      }
-    })
+  putReportQuestion: (req, res) => {
+    const { question_id } = req.params;
+
+    models.updateReportQuestion(question_id)
+      .then((result) => {
+        res.sendStatus(201)
+      })
+      .catch((err) => {
+        console.log(err)
+        res.send(err).status(400)
+      })
+
+    // localhost:4000/qa/questions/3518964/report
+    // localhost:4000/qa/questions/191292/report
+  },
+  putHelpfulAnswer: (req, res) => {
+    console.log('CONTROLLER WORKING')
+    const { answer_id } = req.params;
+
+    models.updateHelpfulAnswer(answer_id)
+      .then((result) => {
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.log(err)
+        res.send(err).status(400)
+      })
+
+
+    // localhost:4000/qa/answers/6879307/helpful
+  },
+  putReportAnswer: (req, res) => {
+    console.log('CONTROLLER WORKING')
+    const { answer_id } = req.params;
+
+    models.updateReportAnswer(answer_id)
+      .then((result) => {
+        res.sendStatus(201);
+      })
+      .catch((err) => {
+        console.log(err)
+        res.send(err).status(400)
+      })
+
+    // localhost:4000/qa/answers/6879307/report
   }
 }
 

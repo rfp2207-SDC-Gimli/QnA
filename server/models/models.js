@@ -49,7 +49,7 @@ module.exports = {
         WHERE questions.product_id = ${product_id}
           AND questions.reported=false
         LIMIT ${count}
-        OFFSET ${page}
+        OFFSET ${page - 1}
         ) AS results`
 
 
@@ -92,7 +92,7 @@ module.exports = {
           WHERE answers.question_id=${question_id}
             AND answers.reported=false
           LIMIT ${count}
-          OFFSET ${page}
+          OFFSET ${page - 1}
         ) AS results
     `
     pool.query(queryStr, (err, result) => {
@@ -174,19 +174,77 @@ module.exports = {
       return resolve(result.rows[0].answer_id)
     })
   }),
-  addPhotos: (id, photos) => new Promise ((resolve, reject) => {
-    var queryStr = ``;
-    var query = ``;
+  addPhotos: (answer_id, photo_url) => new Promise ((resolve, reject) => {
+    // var queryStr = ``;
+    var queryStr = `
+      INSERT INTO photos
+        (
+          answer_id,
+          photo_url,
+          photo_id
+        )
+      VALUES
+        (
+          '${answer_id}',
+          '${photo_url}',
+          (SELECT MAX(photo_id + 1) FROM photos)
+        )
+    `;
 
-    // pool.query(queryString, (err, result) => {
-    //   if(err) {reject(err)}
-    //   return resolve()
-    // })
+    pool.query(queryStr, (err, result) => {
+      if (err) {reject(err)}
+      return resolve()
+    })
   }),
-  updateHelpful: (num, value, callback) => {
-    // console.log('TESTING UPDATE HELP')
-  },
-  updateReport: (num, value, callback) => {
-    // console.log('TESTING UPDATE REPORT')
-  }
+  updateHelpfulQuestion: (question_id) => new Promise((resolve, reject) => {
+    var queryStr = `
+      UPDATE questions
+      SET helpful = helpful + 1
+      WHERE question_id=${question_id}
+    `;
+
+    pool.query(queryStr, (err, result) => {
+      if (err) (reject(err))
+      resolve()
+    })
+  }),
+  updateReportQuestion: (question_id) => new Promise((resolve, reject) => {
+    console.log('TESTING UPDATE REPORT')
+    var queryStr = `
+      UPDATE questions
+      SET reported = true
+      WHERE question_id=${question_id}
+    `;
+
+    pool.query(queryStr, (err, result) => {
+      if (err) (reject(err))
+      resolve()
+    })
+  }),
+  updateHelpfulAnswer: (answer_id) => new Promise((resolve, reject) => {
+    console.log('TESTING UPDATE HELP')
+    var queryStr = `
+      UPDATE answers
+      SET helpful = helpful + 1
+      WHERE answer_id = ${answer_id}
+    `;
+
+    pool.query(queryStr, (err, result) => {
+      if (err) (reject(err))
+      resolve()
+    })
+  }),
+  updateReportAnswer: (answer_id) => new Promise((resolve, reject) => {
+    console.log('TESTING UPDATE REPORT')
+    var queryStr = `
+      UPDATE answers
+      SET reported = true
+      WHERE answer_id = ${answer_id}
+    `;
+
+    pool.query(queryStr, (err, result) => {
+      if (err) (reject(err))
+      resolve()
+    })
+  })
 }
