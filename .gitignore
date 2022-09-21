@@ -2,5 +2,8 @@ data
 .env
 package-lock.json
 node_modules
-
 .DS_Store
+
+
+# pg_dump
+postgresSchema.sql

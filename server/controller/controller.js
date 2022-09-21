@@ -5,7 +5,7 @@ module.exports = {
     let { product_id, page, count } = req.query;
     models.getAllQuestions(product_id, page=1, count=5)
       .then((response) => {
-          res.send({
+        res.send({
           product_id: product_id,
           results: response[0].json_agg
         }).status(200)
