@@ -11,7 +11,6 @@ module.exports = {
         }).status(200)
       })
       .catch((err) => {
-        console.log('bad get question', err)
         res.send(err).status(400)
       })
 
@@ -32,24 +31,20 @@ module.exports = {
       })
       .catch((err) => {
         res.send(err).status(400)
-        console.log('bad get answer', err)
       })
 
 
     // localhost:4000/qa/questions/9763/answers
   },
   postQuestion: (req, res) => {
-    // console.log("POST CONTROLLERRRRRRR")
+
     const { question_body, asker_name, asker_email, product_id } = req.body
 
     models.addQuestion(question_body, asker_name, asker_email, product_id)
       .then((response) => {
-        // console.log(response)
-        console.log('good add question')
         res.sendStatus(201);
       })
       .catch((err) => {
-        console.log('bad post question', err)
         res.send(err).status(400);
       })
 
@@ -80,18 +75,14 @@ module.exports = {
         } else {
           models.addPhotos(answer_id, photos)
             .then((resolve) => {
-              console.log('good add photo');
               res.sendStatus(201);
             })
             .catch((err) => {
-              console.log('bad add photo', err);
               res.send(err).status(400);
             })
         }
-        console.log('answer_id', answer_id)
       })
       .catch((err) => {
-        console.log('bad add answer', err);
         res.send(err).status(400);
       })
 
@@ -139,7 +130,6 @@ module.exports = {
     // localhost:4000/qa/questions/191292/report
   },
   putHelpfulAnswer: (req, res) => {
-    console.log('CONTROLLER WORKING')
     const { answer_id } = req.params;
 
     models.updateHelpfulAnswer(answer_id)
@@ -155,7 +145,6 @@ module.exports = {
     // localhost:4000/qa/answers/6879307/helpful
   },
   putReportAnswer: (req, res) => {
-    console.log('CONTROLLER WORKING')
     const { answer_id } = req.params;
 
     models.updateReportAnswer(answer_id)
@@ -173,15 +162,4 @@ module.exports = {
 
 /*
 \i database/postgres.sql
-
-SELECT * FROM questions LIMIT 5;
-
-SELECT product_id FROM questions LIMIT 5;
-SELECT product_id, question_id || ' ' || question_body AS results FROM questions LIMIT 5;
-
-
-
-
-
-
 */
