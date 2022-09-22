@@ -8,7 +8,7 @@ app.use(express.json());
 app.use('/qa', require('./routes.js'));
 
 
-app.get("/loaderio-b3844ac0cc5713353cd58d7735d0ee9d", (req, res) => res.send("loaderio-b3844ac0cc5713353cd58d7735d0ee9d"))
+app.get("/loaderio-c6f890e29f4e4f82272ed23e937a3b31", (req, res) => res.send("loaderio-c6f890e29f4e4f82272ed23e937a3b31"))
 
 const PORT = `${process.env.PORT}` || 3000;
 
