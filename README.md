@@ -47,7 +47,7 @@ Increased throughput to 5,000 rps.
 | 5,000 rps |    3ms    |     0%    |
 
 ## Installation and Usage
-Ensure postgreSQL is in your computer
+Ensure postgreSQL is installed in your computer
 </br>
 Copy `example.env` file and rename to `.env`, then fill in the variables
 ```
