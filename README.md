@@ -14,7 +14,7 @@ Inherited a front-end e-commerce application. In this project I built and optimi
 | 1,000 rps |  <= 50ms  |   < 1%    |
 
 ### Data Transfer
-The questions and answers data contained over 12 million data entries. I transferred the data from a csv file into a postgreSQL database performing an ETL process.
+The questions and answers data has over 12 million data entries. I transferred the data from a csv file into a postgreSQL database by performing an ETL process.
 
 ### Deployment
 Deployed the server and database to AWS, I used a EC2 T2 micro instance for my server. I stress tested using Loader.io, and took the average of three test with randomized product ID.
@@ -23,7 +23,7 @@ Deployed the server and database to AWS, I used a EC2 T2 micro instance for my s
 | 1,000 rps |  1,200ms  |    32%    |
 
 ### Load Balancer
-Scaled horizontally and deployed another server. I used Nginx as my load balancer.
+I scaled horizontally and deployed another server. Then, I used Nginx as my load balancer.
 | Throughput|  Latency  | Error rate|
 |-----------|-----------|-----------|
 | 1,000 rps |   312ms   |     6%    |
